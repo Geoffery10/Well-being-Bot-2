@@ -3,7 +3,7 @@
 </p>
 
 # Well-Being-Bot
-This is a Discord Bot for my own personal servers. Are for time management but some are fun too.
+This is a Discord Bot for my own personal servers. Most of her features are for time management but some are fun too.
 
 ## Table of Contents
 * [Commands](#license)
