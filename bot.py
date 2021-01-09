@@ -19,25 +19,33 @@ apikey = os.getenv('TENOR_API_KEY')
 intents = discord.Intents.all()
 client = discord.Client(intents=intents)
 
-coding = False
+
+class User:
+    def __init__(self, name, coding, myid, timer):
+        self.name = name
+        self.coding = coding
+        self.myid = myid
+        self.timer = timer
+
+
+users = []
 MAX_TIME = 1801  # 1801
 TIME_RESET_AT = 300
 timeReset = 0
 channel = ""
-myid = '<@253710834553847808>'
-timer = 0
 
 
 @client.event
 async def on_ready():
     # Vars
-    global coding
+    global users
     global MAX_TIME
     global TIME_RESET_AT
     global timeReset
     global channel
-    global myid
-    global timer
+
+    users.append(User('Geoffery10', False, '<@253710834553847808>', 0))
+    users.append(User('Connor', False, '<@251488731750465536>', 0))
 
     channel = client.get_channel(786751239613579305)  # work-time
     loggingchannel = client.get_channel(789224794334953474)
@@ -49,33 +57,34 @@ async def on_ready():
 
     # Check for coding activity
     while True:
-        if coding:
-            seconds = timer % (24 * 3600)
-            hour = seconds // 3600
-            seconds %= 3600
-            minutes = seconds // 60
-            seconds %= 60
-            timer = timer + 1
-            print("Timer:", timer)
-            if timer >= MAX_TIME:
-                await channel.send(
-                    'Hey onii-san %s, you should take a break. It\'s been about %d minutes.' % (
-                        myid, minutes), tts=True)
-                await sendGif(channel, "cute anime girl", random=True)
-                timer = 0
-            elif timer == int(MAX_TIME / 2):
-                await channel.send(
-                    'Hello onii-san %s, you are about half way to your next break.' % myid,
-                    tts=True)
-            '''
-            else:
-                if timeReset >= TIME_RESET_AT:
-                    timer = 0
-                    timeReset = 0
+        for user in users:
+            if user.coding:
+                seconds = user.timer % (24 * 3600)
+                hour = seconds // 3600
+                seconds %= 3600
+                minutes = seconds // 60
+                seconds %= 60
+                user.timer = user.timer + 1
+                print("Timer:", user.timer)
+                if user.timer >= MAX_TIME:
+                    await channel.send(
+                        'Hey onii-san %s, you should take a break. It\'s been about %d minutes.' % (
+                            user.myid, minutes), tts=True)
+                    await sendGif(channel, "cute anime girl", random=True)
+                    user.timer = 0
+                elif user.timer == int(MAX_TIME / 2):
+                    await channel.send(
+                        'Hello onii-san %s, you are about half way to your next break.' % user.myid,
+                        tts=True)
+                '''
                 else:
-                    timeReset = timeReset + 1
-            '''
-        await asyncio.sleep(1)
+                    if timeReset >= TIME_RESET_AT:
+                        timer = 0
+                        timeReset = 0
+                    else:
+                        timeReset = timeReset + 1
+                '''
+            await asyncio.sleep(1)
 
 
 async def sendGif(channel, search_term, random):
@@ -103,13 +112,11 @@ async def on_message(message):
         return
 
     # Vars
-    global coding
+    global users
     global MAX_TIME
     global TIME_RESET_AT
     global timeReset
     global channel
-    global myid
-    global timer
 
     mentions = message.mentions
     if len(mentions) > 0:
@@ -118,23 +125,30 @@ async def on_message(message):
                 await client.logout()
             else:
                 await sendGif(message.channel, "cute anime girl", random=True)
-                print(await sendLog(log=("Sent by: " + message.author.name + "\tID: " + str(message.author.id)), client=client))
+                print(await sendLog(log=("Sent by: " + message.author.name + "\tID: " + str(message.author.id)),
+                                    client=client))
 
     if search(("/(^.*\soof$)|(^oof\s.*)|(^oof$)|(^.*\soof\s.*$)/i"), message.content.lower()):
         await sendGif(message.channel, "oof", False)
         print(await sendLog(log=("Sent by: " + message.author.name + "\tID: " + str(message.author.id)), client=client))
 
-    if message.author.id == 253710834553847808:
+    if message.author.id == 253710834553847808 or message.author.id == 251488731750465536:
+        if message.author.id == 253710834553847808:
+            user = users[0]
+        else:
+            user = users[1]
         if search("^!code", message.content):
+            print(await sendLog(log=f"Started/Stopped Code Timer for: {user.name}\tID: {str(message.author.id)}",
+                                client=client))
             # Start timer
-            if coding:
-                timer = 0
-                coding = False
-                await message.channel.send('Alright %s I stopped your break timer.' % myid)
+            if user.coding:
+                user.timer = 0
+                user.coding = False
+                await message.channel.send('Alright %s I stopped your break timer.' % user.myid)
             else:
-                coding = True
-                timer = 0
-                await message.channel.send('Okay %s I started your break timer!' % myid)
+                user.coding = True
+                user.timer = 0
+                await message.channel.send('Okay %s I started your break timer!' % user.myid)
                 print("The Half Timer is set to:", int(MAX_TIME / 2))
                 print("The Final Timer is set to:", MAX_TIME)
             try:
@@ -144,7 +158,7 @@ async def on_message(message):
 
         if search("^!time", message.content):
             # Get timer
-            seconds = timer % (24 * 3600)
+            seconds = user.timer % (24 * 3600)
             hour = seconds // 3600
             seconds %= 3600
             minutes = seconds // 60
