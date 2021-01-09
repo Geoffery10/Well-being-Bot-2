@@ -124,7 +124,10 @@ async def on_message(message):
             if search("^!quit", message.content.lower()) and message.channel == client.get_channel(789190323326025789):
                 await client.logout()
             else:
-                await sendGif(message.channel, "cute anime girl", random=True)
+                if search("^!punch", message.content.lower()) and mentions[0].id == client.user.id:
+                    await sendGif(message.channel, "crying anime girl", random=False)
+                else:
+                    await sendGif(message.channel, "cute anime girl", random=True)
                 print(await sendLog(log=("Sent by: " + message.author.name + "\tID: " + str(message.author.id)),
                                     client=client))
 
