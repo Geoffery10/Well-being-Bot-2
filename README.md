@@ -1,5 +1,5 @@
 <p align="center">
-<img align="center" width="200" height="200" src="https://github.com/Geoffery10/Well-being-Bot-2/blob/main/img/Well-being%20Bot_01.png">
+<img align="center" width="200" height="200" src="https://github.com/Geoffery10/Well-being-Bot-2/blob/main/img/Well-being%20Bot_03.png?raw=true">
 </p>
 
 # Well-Being-Bot
