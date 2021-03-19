@@ -10,7 +10,11 @@ This is a Discord Bot for my own personal servers. Most of her features are for 
 * [License](#license)
 
 ## Commands
-* WORK IN PROGRESS
+* !code - Start/Stop Coding Timer
+* !time - Get time before next break
+* !quit - Shutdown bot (Admin Only) 
+* !punch - Punch someone
+* Oof - Oof gif
  
 ## License
 This code is was created and owned by me. You are free to use it in your own projects without credit (Just don't submit it to your Professor because that's a bad idea).
