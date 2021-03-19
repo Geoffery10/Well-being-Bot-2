@@ -13,7 +13,6 @@ This is a Discord Bot for my own personal servers. Most of her features are for 
 * !code - Start/Stop Coding Timer
 * !time - Get time before next break
 * !quit - Shutdown bot (Admin Only) 
-* !punch - Punch someone
 * Oof - Oof gif
  
 ## License
