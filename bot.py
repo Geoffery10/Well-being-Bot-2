@@ -7,7 +7,7 @@ import asyncio
 from dotenv import load_dotenv
 from re import search
 import requests
-from random import randrange
+from random import randint, randrange
 import json
 from loggingChannel import sendLog
 
@@ -132,8 +132,9 @@ async def on_message(message):
                                     client=client))
 
     if search(("/(^.*\soof$)|(^oof\s.*)|(^oof$)|(^.*\soof\s.*$)/i"), message.content.lower()):
-        await sendGif(message.channel, "oof", False)
-        print(await sendLog(log=("Sent by: " + message.author.name + "\tID: " + str(message.author.id)), client=client))
+        if randint(0, 9) >= 6:
+            await sendGif(message.channel, "oof", False)
+            print(await sendLog(log=("Sent by: " + message.author.name + "\tID: " + str(message.author.id)), client=client))
 
     if message.author.id == 253710834553847808 or message.author.id == 251488731750465536:
         if message.author.id == 253710834553847808:
